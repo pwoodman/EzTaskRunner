@@ -31,6 +31,18 @@
             .btn-add-task i {
                 margin-right: 5px;
             }
+            footer {
+                margin-top: 3rem;
+                padding: 1rem 0;
+                border-top: 1px solid #e9ecef;
+                color: #6c757d;
+                font-size: 0.875rem;
+                text-align: center;
+            }
+            .version-info {
+                font-size: 0.75rem;
+                opacity: 0.8;
+            }
         </style>
     {% endblock %}
 </head>
@@ -77,6 +89,15 @@
         <!-- Page content -->
         {% block content %}{% endblock %}
     </div>
+
+    <!-- Footer with version info -->
+    <footer class="container">
+        <div class="row">
+            <div class="col-12">
+                <p>EzTaskRunner &copy; {{ now.year }} <span class="version-info">v{{ config.VERSION }}</span></p>
+            </div>
+        </div>
+    </footer>
 
     <!-- JavaScript -->
     {% block scripts %}

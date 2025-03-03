@@ -9,6 +9,7 @@ from flask import Flask, render_template, flash, g, redirect, url_for
 from datetime import datetime
 
 from app.scheduler import init_scheduler
+from app.version import __version__
 
 def create_app(config=None):
     """Create and configure the Flask application."""
@@ -34,7 +35,10 @@ def create_app(config=None):
         SERVER_NAME=os.environ.get('SERVER_NAME', None),  # Needed for url_for with _external=True
         
         # Logging settings
-        LOG_LEVEL=os.environ.get('LOG_LEVEL', 'INFO')  # Can be DEBUG, INFO, WARNING, ERROR, CRITICAL
+        LOG_LEVEL=os.environ.get('LOG_LEVEL', 'INFO'),  # Can be DEBUG, INFO, WARNING, ERROR, CRITICAL
+        
+        # Version information
+        VERSION=__version__
     )
     
     # Ensure required directories exist
@@ -55,21 +59,16 @@ def create_app(config=None):
     # Register error handlers
     register_error_handlers(app)
     
-    # Set up template filters
+    # Add template filters
     @app.template_filter('parse_datetime')
-    def parse_datetime_filter(dt_str):
-        """Parse a datetime string into a datetime object for template use."""
+    def parse_datetime_filter(value):
+        """Parse datetime string to datetime object."""
+        if not value:
+            return None
         try:
-            if isinstance(dt_str, str):
-                # Try different formats
-                for fmt in ["%Y-%m-%d %H:%M:%S", "%Y-%m-%dT%H:%M:%S", "%Y-%m-%d %H:%M"]:
-                    try:
-                        return datetime.strptime(dt_str, fmt)
-                    except ValueError:
-                        continue
-            return dt_str  # Return as is if parsing fails
-        except Exception:
-            return dt_str
+            return datetime.fromisoformat(value.replace('Z', '+00:00'))
+        except (ValueError, AttributeError):
+            return None
     
     @app.template_filter('split')
     def split_filter(value, delimiter=None):
@@ -77,6 +76,14 @@ def create_app(config=None):
         if not isinstance(value, str):
             return []
         return value.split(delimiter)
+    
+    # Add context processor for template globals
+    @app.context_processor
+    def inject_globals():
+        """Inject global variables into templates."""
+        return {
+            'now': datetime.now()
+        }
     
     return app
 

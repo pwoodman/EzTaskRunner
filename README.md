@@ -1,4 +1,4 @@
-# EzTaskRunner
+# EzTaskRunner v0.1
 
 A web-based task scheduling and monitoring application for running scripts on a schedule. EzTaskRunner provides an easy-to-use interface for setting up, executing, and monitoring automated tasks for Python, PowerShell, and Batch scripts.
 
@@ -205,6 +205,7 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## 🔗 Links
 
-- [Project Homepage](https://github.com/yourusername/eztaskrunner)
-- [Issue Tracker](https://github.com/yourusername/eztaskrunner/issues)
+- [Project Homepage](https://github.com/pwoodman/eztaskrunner)
+- [Demo Video](https://www.loom.com/share/dceab5f7d05540c39988998d0a5f7aa2?sid=078b6c6c-5d60-447b-ac69-242e6ce4d41d)
+- [Issue Tracker](https://github.com/pwoodman/eztaskrunner/issues)
 - [Buy me a coffee](https://buymeacoffee.com/patrickwoodman) 
