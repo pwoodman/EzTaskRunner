@@ -1,0 +1,15 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
+  <div class="container">
+    <a class="navbar-brand" href="{{ url_for('main.index') }}"><i class="bi bi-calendar-check me-2"></i>EzTaskRunner</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link {{ 'active' if request.endpoint == 'main.index' }}" href="{{ url_for('main.index') }}"><i class="bi bi-house me-1"></i>Dashboard</a></li>
+        <li class="nav-item"><a class="nav-link {{ 'active' if request.endpoint == 'tasks.add_task' }}" href="{{ url_for('tasks.add_task') }}"><i class="bi bi-plus-circle me-1"></i>Add Task</a></li>
+        <li class="nav-item"><a class="nav-link {{ 'active' if request.endpoint == 'monitoring.index' }}" href="{{ url_for('monitoring.index') }}"><i class="bi bi-graph-up me-1"></i>Monitoring</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>

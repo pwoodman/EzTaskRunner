@@ -1,0 +1,164 @@
+<!-- One-time schedule section -->
+<div id="date_section" class="trigger-section mb-3">
+  <label for="schedule_time" class="form-label">Schedule Time <span class="text-danger">*</span></label>
+  <input type="datetime-local" class="form-control" id="schedule_time" name="schedule_time" value="{{ task.schedule_time.replace(' ', 'T') if task and task.trigger_type == 'date' else '' }}">
+  <div class="form-text">When to run this task</div>
+</div>
+
+<!-- Interval schedule section -->
+<div id="interval_section" class="trigger-section mb-3">
+  <label class="form-label">Run Every <span class="text-danger">*</span></label>
+  <div class="row g-2">
+    <div class="col-md-4">
+      <div class="input-group">
+        <input type="number" class="form-control" id="interval_hours" name="interval_hours" min="0" value="{{ task.interval_hours if task and task.trigger_type == 'interval' else 0 }}">
+        <span class="input-group-text">Hours</span>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="input-group">
+        <input type="number" class="form-control" id="interval_minutes" name="interval_minutes" min="0" value="{{ task.interval_minutes if task and task.trigger_type == 'interval' else 0 }}">
+        <span class="input-group-text">Minutes</span>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="input-group">
+        <input type="number" class="form-control" id="interval_seconds" name="interval_seconds" min="0" value="{{ task.interval_seconds if task and task.trigger_type == 'interval' else 0 }}">
+        <span class="input-group-text">Seconds</span>
+      </div>
+    </div>
+  </div>
+  <div class="form-text">At least one value must be greater than 0</div>
+</div>
+
+<!-- Cron schedule section -->
+<div id="cron_section" class="trigger-section mb-3">
+  <div class="mb-3">
+    <label for="cron_expression" class="form-label">Cron Expression <span class="text-danger">*</span></label>
+    <div class="input-group">
+      <input type="text" class="form-control" id="cron_expression" name="cron_expression" value="{{ task.cron_expression if task and task.trigger_type == 'cron' else '' }}" placeholder="e.g., 0 9 * * 1-5">
+      <button class="btn btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#cronBuilder" aria-expanded="false" aria-controls="cronBuilder">
+        <i class="bi bi-gear"></i> Builder
+      </button>
+    </div>
+    <div class="form-text">Format: minute hour day_of_month month day_of_week<br>Example: "0 9 * * 1-5" runs at 9:00 AM every weekday</div>
+  </div>
+  
+  <div class="collapse" id="cronBuilder">
+    <div class="card card-body mb-3">
+      <h6 class="mb-3">Cron Expression Builder</h6>
+      <!-- Common presets -->
+      <div class="mb-3">
+        <label class="form-label">Common Presets</label>
+        <select class="form-select" id="cronPresets">
+          <option value="">Select a preset...</option>
+          <option value="0 * * * *">Hourly (0 * * * *)</option>
+          <option value="0 0 * * *">Daily at midnight (0 0 * * *)</option>
+          <option value="0 12 * * *">Daily at noon (0 12 * * *)</option>
+          <option value="0 0 * * 0">Weekly on Sunday (0 0 * * 0)</option>
+          <option value="0 0 * * 1">Weekly on Monday (0 0 * * 1)</option>
+          <option value="0 0 1 * *">Monthly on the 1st (0 0 1 * *)</option>
+          <option value="0 0 1 1 *">Yearly on Jan 1 (0 0 1 1 *)</option>
+          <option value="0 9-17 * * 1-5">Workdays 9-5 (0 9-17 * * 1-5)</option>
+        </select>
+      </div>
+      
+      <div class="row">
+        <!-- Minutes -->
+        <div class="col-md-4 mb-3">
+          <label class="form-label">Minute</label>
+          <select class="form-select cron-part" id="cronMinute" data-position="0">
+            <option value="*">Every minute (*)</option>
+            <option value="*/5">Every 5 minutes (*/5)</option>
+            <option value="*/10">Every 10 minutes (*/10)</option>
+            <option value="*/15">Every 15 minutes (*/15)</option>
+            <option value="*/30">Every 30 minutes (*/30)</option>
+            <option value="0">At minute 0 (0)</option>
+            <option value="15">At minute 15 (15)</option>
+            <option value="30">At minute 30 (30)</option>
+            <option value="45">At minute 45 (45)</option>
+            <option value="custom">Custom value...</option>
+          </select>
+          <input type="text" class="form-control mt-2 custom-cron-input" id="customCronMinute" placeholder="Custom minute" style="display: none;">
+        </div>
+        <!-- Hours -->
+        <div class="col-md-4 mb-3">
+          <label class="form-label">Hour</label>
+          <select class="form-select cron-part" id="cronHour" data-position="1">
+            <option value="*">Every hour (*)</option>
+            <option value="*/2">Every 2 hours (*/2)</option>
+            <option value="*/3">Every 3 hours (*/3)</option>
+            <option value="*/4">Every 4 hours (*/4)</option>
+            <option value="*/6">Every 6 hours (*/6)</option>
+            <option value="*/12">Every 12 hours (*/12)</option>
+            <option value="0">At midnight (0)</option>
+            <option value="9">At 9 AM (9)</option>
+            <option value="12">At noon (12)</option>
+            <option value="18">At 6 PM (18)</option>
+            <option value="custom">Custom value...</option>
+          </select>
+          <input type="text" class="form-control mt-2 custom-cron-input" id="customCronHour" placeholder="Custom hour" style="display: none;">
+        </div>
+        <!-- Day of Month -->
+        <div class="col-md-4 mb-3">
+          <label class="form-label">Day of Month</label>
+          <select class="form-select cron-part" id="cronDom" data-position="2">
+            <option value="*">Every day (*)</option>
+            <option value="1">On the 1st (1)</option>
+            <option value="15">On the 15th (15)</option>
+            <option value="L">On the last day (L)</option>
+            <option value="1,15">On the 1st and 15th (1,15)</option>
+            <option value="1-5">From the 1st to the 5th (1-5)</option>
+            <option value="custom">Custom value...</option>
+          </select>
+          <input type="text" class="form-control mt-2 custom-cron-input" id="customCronDom" placeholder="Custom day of month" style="display: none;">
+        </div>
+        <!-- Month -->
+        <div class="col-md-6 mb-3">
+          <label class="form-label">Month</label>
+          <select class="form-select cron-part" id="cronMonth" data-position="3">
+            <option value="*">Every month (*)</option>
+            <option value="1">January (1)</option>
+            <option value="2">February (2)</option>
+            <option value="3">March (3)</option>
+            <option value="4">April (4)</option>
+            <option value="5">May (5)</option>
+            <option value="6">June (6)</option>
+            <option value="7">July (7)</option>
+            <option value="8">August (8)</option>
+            <option value="9">September (9)</option>
+            <option value="10">October (10)</option>
+            <option value="11">November (11)</option>
+            <option value="12">December (12)</option>
+            <option value="1,4,7,10">Quarterly (1,4,7,10)</option>
+            <option value="custom">Custom value...</option>
+          </select>
+          <input type="text" class="form-control mt-2 custom-cron-input" id="customCronMonth" placeholder="Custom month" style="display: none;">
+        </div>
+        <!-- Day of Week -->
+        <div class="col-md-6 mb-3">
+          <label class="form-label">Day of Week</label>
+          <select class="form-select cron-part" id="cronDow" data-position="4">
+            <option value="*">Every day (*)</option>
+            <option value="0">Sunday (0)</option>
+            <option value="1">Monday (1)</option>
+            <option value="2">Tuesday (2)</option>
+            <option value="3">Wednesday (3)</option>
+            <option value="4">Thursday (4)</option>
+            <option value="5">Friday (5)</option>
+            <option value="6">Saturday (6)</option>
+            <option value="1-5">Monday to Friday (1-5)</option>
+            <option value="0,6">Weekends (0,6)</option>
+            <option value="custom">Custom value...</option>
+          </select>
+          <input type="text" class="form-control mt-2 custom-cron-input" id="customCronDow" placeholder="Custom day of week" style="display: none;">
+        </div>
+      </div>
+      
+      <div class="alert alert-info">
+        <i class="bi bi-info-circle me-2"></i>
+        <span id="cronDescription">Your cron expression will run the task at the specified schedule.</span>
+      </div>
+    </div>
+  </div>
+</div>

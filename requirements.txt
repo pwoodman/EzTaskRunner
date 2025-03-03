@@ -1,0 +1,15 @@
+Flask==2.3.3
+# Using Bootstrap from CDN instead
+# Flask-Bootstrap4==4.0.2
+# If you prefer Bootstrap 5, you can try:
+# bootstrap-flask>=2.2.0
+apscheduler==3.10.4
+psutil==5.9.5
+Werkzeug==2.3.7
+Jinja2==3.1.2
+itsdangerous==2.1.2
+click==8.1.7
+python-dateutil==2.8.2
+pytz==2023.3
+tzlocal==5.0.1
+six==1.16.0 

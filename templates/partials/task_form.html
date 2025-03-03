@@ -1,0 +1,40 @@
+<div class="mb-3">
+  <label for="task_name" class="form-label">Task Name</label>
+  <input type="text" class="form-control" id="task_name" name="task_name" value="{{ task.task_name if task else '' }}" placeholder="Enter a descriptive name for this task">
+</div>
+
+<div class="mb-3">
+  <label for="script_path" class="form-label">Script Path <span class="text-danger">*</span></label>
+  <div class="input-group">
+    <input type="text" class="form-control" id="script_path" name="script_path" value="{{ task.script_path if task else '' }}" placeholder="e.g., scripts/my_script.py" required>
+    <button class="btn btn-outline-secondary" type="button" data-bs-toggle="modal" data-bs-target="#fileBrowserModal">
+      <i class="bi bi-folder2-open"></i> Browse
+    </button>
+  </div>
+  <div class="form-text">Full path to the Python script to execute (relative to scripts directory)</div>
+</div>
+
+<div class="mb-3">
+  <label for="description" class="form-label">Description</label>
+  <textarea class="form-control" id="description" name="description" rows="2" placeholder="Optional description of what this task does">{{ task.description if task else '' }}</textarea>
+</div>
+
+<div class="mb-4">
+  <label class="form-label">Schedule Type <span class="text-danger">*</span></label>
+  <div class="d-flex gap-3">
+    <div class="form-check">
+      <input class="form-check-input trigger-radio" type="radio" name="trigger_type" id="trigger_date" value="date" {{ 'checked' if not task or task.trigger_type == 'date' }}>
+      <label class="form-check-label" for="trigger_date">One-time</label>
+    </div>
+    <div class="form-check">
+      <input class="form-check-input trigger-radio" type="radio" name="trigger_type" id="trigger_interval" value="interval" {{ 'checked' if task and task.trigger_type == 'interval' }}>
+      <label class="form-check-label" for="trigger_interval">Interval</label>
+    </div>
+    <div class="form-check">
+      <input class="form-check-input trigger-radio" type="radio" name="trigger_type" id="trigger_cron" value="cron" {{ 'checked' if task and task.trigger_type == 'cron' }}>
+      <label class="form-check-label" for="trigger_cron">Cron</label>
+    </div>
+  </div>
+</div>
+
+{% include 'partials/schedule_sections.html' %}
